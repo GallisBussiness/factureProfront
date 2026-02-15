@@ -8,6 +8,4 @@ count.txt
 .nitro
 .tanstack
 .wrangler
-Dockerfile
 docker-compose.yml
-dockerfile

@@ -1,9 +1,9 @@
-import { ComponentPropsWithoutRef, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useInView, useMotionValue, useSpring } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
-interface NumberTickerProps extends ComponentPropsWithoutRef<"span"> {
+interface NumberTickerProps extends React.ComponentPropsWithoutRef<"span"> {
   value: number
   startValue?: number
   direction?: "up" | "down"

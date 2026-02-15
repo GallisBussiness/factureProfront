@@ -1,5 +1,4 @@
 import {
-  BadgeCheck,
   Bell,
   ChevronsUpDown,
   LogOut,
@@ -86,10 +85,6 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => navigate({ to: '/admin/profil' })}>
-                <BadgeCheck />
-                Mon profil
-              </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
                 Notifications

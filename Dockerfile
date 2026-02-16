@@ -42,6 +42,11 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 # Copy the rest of the source files into the image.
 COPY . .
+
+# Set Vite env variables at build time (Vite inlines them during build)
+ARG VITE_APP_BACKEND=http://localhost:3001
+ENV VITE_APP_BACKEND=${VITE_APP_BACKEND}
+
 # Run the build script.
 RUN yarn run build
 

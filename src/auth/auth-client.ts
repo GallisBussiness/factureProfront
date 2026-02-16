@@ -4,6 +4,9 @@ import { adminClient } from "better-auth/client/plugins"
 
 export const authClient = createAuthClient({
   baseURL: env.VITE_APP_BACKEND,
+  fetchOptions:{
+    credentials: 'include'
+  },
   plugins: [adminClient()],
 })
 

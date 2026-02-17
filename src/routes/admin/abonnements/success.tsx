@@ -30,6 +30,8 @@ function SubscriptionSuccessPage() {
     enabled: !!ref,
   })
 
+  console.log(payment)
+
   const formatCurrency = (value: number, devise = 'XOF') =>
     new Intl.NumberFormat('fr-FR', { style: 'currency', currency: devise }).format(value)
 

@@ -6,6 +6,9 @@ import {
   Warehouse,
   Ruler,
   UserCog,
+  CreditCard,
+  Calendar,
+  Clock,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -18,6 +21,8 @@ import {
 } from "@/components/ui/sidebar"
 import { useSession } from "@/auth/auth-client"
 import { Avatar } from "antd"
+import { useQuery } from "@tanstack/react-query"
+import { SubscriptionService } from "@/services/subscription.service"
 
 // This is sample data.
 const data = {
@@ -117,7 +122,15 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: sessionData } = useSession();  
+  const { data: sessionData } = useSession();
+  const userId = sessionData?.user?.id;
+
+  const { data: activeSubscription } = useQuery({
+    queryKey: ['active-subscription', 'admin'],
+    queryFn: () => SubscriptionService.getActiveSubscription('admin'),
+    enabled: !!userId,
+  });
+
   // Adapter les données de session au format attendu par NavUser
   const user = sessionData?.user ? {
     name: sessionData.user.name,
@@ -136,12 +149,42 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       ),
     }));
   
+  const DUREE_LABELS: Record<string, string> = {
+    MONTHLY: 'Mensuel',
+    QUARTERLY: 'Trimestriel',
+    YEARLY: 'Annuel',
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarContent>
         <div className="flex items-center justify-center">
           <Avatar size={80} src="/logo.jpg" />
         </div>
+        
+        {activeSubscription && (
+          <div className="mx-3 mt-4 mb-2 p-3 rounded-lg bg-linear-to-r from-blue-50 to-indigo-50 border border-blue-100">
+            <div className="flex items-center gap-2 mb-1.5">
+              <CreditCard className="h-4 w-4 text-blue-600" />
+              <span className="text-xs font-semibold text-blue-700">Abonnement Actif</span>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-xs text-slate-600">
+                <Clock className="h-3.5 w-3.5 text-slate-400" />
+                <span>{DUREE_LABELS[activeSubscription.planId?.duree] || 'Personnalisé'}</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-slate-600">
+                <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                <span>Expire le {new Date(activeSubscription.dateFin).toLocaleDateString('fr-FR', { 
+                  day: 'numeric', 
+                  month: 'short', 
+                  year: 'numeric' 
+                })}</span>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <NavMain items={filteredNavMain} />
       </SidebarContent>
       <SidebarFooter>

@@ -12,11 +12,6 @@ import { SubscriptionService } from "@/services/subscription.service"
 export const Route = createFileRoute('/admin')({
   beforeLoad: async ({ location }) => {
     const session = await authClient.getSession()
-    console.log("session", session)
-    if (!session.data?.user) {
-     console.log("pas de session")
-    }
-
     const user = session.data?.user
     const isSuccessPage = location.pathname.startsWith('/admin/abonnements/success')
 

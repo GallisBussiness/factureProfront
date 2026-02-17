@@ -62,20 +62,13 @@ function AbonnementPage() {
       message.error("Le module de paiement n'est pas chargé. Veuillez rafraîchir la page.")
       return
     }
+    const response = await SubscriptionService.subscribe(userId, planId)
+    // const paytechToken = response.token
 
     try {
       setSubscribingPlan(planId)
-      const data = await SubscriptionService.subscribe(userId, planId)
-
-      if (data.redirectUrl) {
-        ;(new PayTechSDK({
-          idTransaction: data.subscription?.refCommand || data.subscription?._id || planId,
-        })).withOption({
-          requestTokenUrl: `${env.VITE_APP_BACKEND}/subscriptions/subscribe`,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+        ;(new PayTechSDK({  })).withOption({
+          tokenUrl: response.redirect_url,
           presentationMode: PayTechSDK.OPEN_IN_POPUP,
           didReceiveError: (error: string) => {
             message.error('Erreur paiement : ' + error)
@@ -86,13 +79,6 @@ function AbonnementPage() {
             setSubscribingPlan(null)
           },
         }).send()
-
-        queryClient.invalidateQueries({ queryKey: ['active-subscription', 'admin'] })
-      } else {
-        message.success('Abonnement créé avec succès')
-        queryClient.invalidateQueries({ queryKey: ['active-subscription', 'admin'] })
-        navigate({ to: '/admin' })
-      }
     } catch (err: any) {
       message.error(err?.message || 'Erreur lors de la souscription')
     } finally {

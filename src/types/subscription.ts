@@ -59,6 +59,8 @@ export interface SubscribeDto {
 }
 
 export interface SubscribeResponse {
-  subscription: Subscription;
+   success: number;
+  token: string;
+  redirect_url: string;
   redirectUrl: string;
 }

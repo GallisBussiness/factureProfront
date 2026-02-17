@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Tag, message, Spin } from 'antd'
 import { CheckCircle2, CreditCard, Crown, Zap, LogOut } from 'lucide-react'
@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { SubscriptionService } from '@/services/subscription.service'
 import { authClient, useSession } from '@/auth/auth-client'
-import { env } from '@/env'
 import type { SubscriptionPlan } from '@/types/subscription'
 
 export const Route = createFileRoute('/abonnement')({
@@ -35,7 +34,6 @@ const DUREE_COLORS: Record<string, string> = {
 
 function AbonnementPage() {
   const { data: session } = useSession()
-  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const userId = session?.user?.id
   const [subscribingPlan, setSubscribingPlan] = useState<string | null>(null)

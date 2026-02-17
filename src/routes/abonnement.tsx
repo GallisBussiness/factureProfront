@@ -62,7 +62,7 @@ function AbonnementPage() {
       message.error("Le module de paiement n'est pas chargé. Veuillez rafraîchir la page.")
       return
     }
-    const response = await SubscriptionService.subscribe(userId, planId)
+    const response = await SubscriptionService.subscribe('admin', planId)
     // const paytechToken = response.token
 
     try {
